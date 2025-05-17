@@ -27,7 +27,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <!--  依赖版本      -->
-        <spring.boot.version>3.1.12</spring.boot.version>
+        <spring.boot.version>3.4.5</spring.boot.version>
         <com.github.xiaoymin.version>4.2.0</com.github.xiaoymin.version>
         <mybatis-plus-spring-boot3-starter.version>3.5.7</mybatis-plus-spring-boot3-starter.version>
         <sa-token-spring-boot3-starter>1.39.0</sa-token-spring-boot3-starter>
