@@ -1,0 +1,42 @@
+name: Auto Approve and Merge Dependabot PRs
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  auto-approve-merge:
+    runs-on: ubuntu-latest
+    # 仅当拉取请求是由 dependabot[bot] 创建时才运行此作业
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    permissions:
+      pull-requests: write
+      contents: write
+      # 如果你的仓库需要 secrets，可能还需要这里的 secrets 权限
+      # secrets: write # 根据需要添加
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Auto-approve Dependabot PR
+        # 使用 gh CLI 来批准 PR
+        run: |
+          gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Enable GitHub Auto-merge
+        # 设置 PR 为自动合并，等待所有检查通过后由 GitHub 合并
+        run: |
+          gh pr merge --auto --squash "$PR_URL" # 或者使用 --merge 或 --rebase
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
