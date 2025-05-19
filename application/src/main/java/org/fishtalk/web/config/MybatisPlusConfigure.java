@@ -25,6 +25,7 @@ public class MybatisPlusConfigure implements MetaObjectHandler {
 
     /**
      * mybatis-plus自动填充功能实现
+     *
      * @param metaObject 元对象
      */
     @Override
@@ -61,6 +62,7 @@ public class MybatisPlusConfigure implements MetaObjectHandler {
         }
         setFieldValByName(EntityFieldName.UPDATE_TIME, LocalDateTime.now(), metaObject);
     }
+
     /**
      * Mybatis添加分页插件
      */
