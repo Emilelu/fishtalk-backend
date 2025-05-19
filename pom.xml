@@ -28,7 +28,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <!--  依赖版本      -->
         <spring.boot.version>3.4.5</spring.boot.version>
-        <com.github.xiaoymin.version>4.5.0</com.github.xiaoymin.version>
+        <knife4j.version>4.4.93</knife4j.version>
         <mybatis-plus-spring-boot3-starter.version>3.5.12</mybatis-plus-spring-boot3-starter.version>
         <sa-token-spring-boot3-starter>1.39.0</sa-token-spring-boot3-starter>
         <cn.hutool.version>5.8.38</cn.hutool.version>
@@ -66,9 +66,9 @@
             </dependency>
             <!--	knife4j文档	-->
             <dependency>
-                <groupId>com.github.xiaoymin</groupId>
+                <groupId>com.nb6868.onex</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${com.github.xiaoymin.version}</version>
+                <version>${knife4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.fishtalk</groupId>

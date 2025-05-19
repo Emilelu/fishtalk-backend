@@ -30,12 +30,12 @@ import java.util.stream.Stream;
 public class MvcConfigure implements WebMvcConfigurer {
 
     /**
-     *  拦截路径
+     * 拦截路径
      */
     private static final String PATH = "/**";
 
     /**
-     *  白名单
+     * 白名单
      */
     private String[] whiteList = new String[]{
             "/**/doc.html",
@@ -44,7 +44,9 @@ public class MvcConfigure implements WebMvcConfigurer {
             "/**/*.png",
             "/**/*.jpg",
             "/**/*.ico",
-            "/**/v3/**",
+            "/v3/api-docs/**",
+            "/swagger/**",
+            "/swagger-ui/**",
             "/api/user/login",
             "/api/user/register"
     };
