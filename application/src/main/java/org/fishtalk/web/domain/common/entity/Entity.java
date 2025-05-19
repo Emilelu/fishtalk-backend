@@ -1,9 +1,9 @@
 package org.fishtalk.web.domain.common.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
@@ -23,9 +23,9 @@ public class Entity implements Serializable {
     @Serial
     private static final long serialVersionUID = -1284347847778673827L;
 
-    @TableId
     @JsonView({UPDATE.class, SaveOrUpdate.class})
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     @JsonView({IGNORE.class})
     @TableField(fill = FieldFill.INSERT)
@@ -34,22 +34,13 @@ public class Entity implements Serializable {
     @JsonView({IGNORE.class})
     @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+    
+    public interface IGNORE {
+    }
 
-    @JsonView({IGNORE.class})
-    @TableField(fill = FieldFill.INSERT)
-    @TableLogic
-    private String deleteFlag;
+    public interface UPDATE {
+    }
 
-    @TableField(fill = FieldFill.INSERT)
-    @JsonView({IGNORE.class})
-    private String createUser;
-
-    @TableField(fill = FieldFill.UPDATE)
-    @JsonView({IGNORE.class})
-    private String updateUser;
-
-    public interface INSERT {}
-    public interface IGNORE {}
-    public interface UPDATE {}
-    public interface SaveOrUpdate {}
+    public interface SaveOrUpdate {
+    }
 }

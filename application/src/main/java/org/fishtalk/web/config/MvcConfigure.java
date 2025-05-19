@@ -44,7 +44,9 @@ public class MvcConfigure implements WebMvcConfigurer {
             "/**/*.png",
             "/**/*.jpg",
             "/**/*.ico",
-            "/**/v3/**"
+            "/**/v3/**",
+            "/api/user/login",
+            "/api/user/register"
     };
 
     /**

@@ -105,3 +105,8 @@ logging:
 # 身份验证
 authorization:
   enable: false
+
+# servlet 上下文
+server:
+  servlet:
+    context-path: /api
