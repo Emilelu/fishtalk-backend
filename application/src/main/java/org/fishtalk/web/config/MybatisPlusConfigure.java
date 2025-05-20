@@ -14,8 +14,11 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 
-
 /**
+ * Mybatis-Plus 配置类
+ * 1. 实现自动填充功能
+ * 2. 配置分页插件
+ * 
  * @author xxl
  * @since 2024/9/13
  */
@@ -24,51 +27,63 @@ import java.time.LocalDateTime;
 public class MybatisPlusConfigure implements MetaObjectHandler {
 
     /**
-     * mybatis-plus自动填充功能实现
-     *
+     * 插入时自动填充字段
+     * 1. 自动填充创建时间
+     * 2. 自动填充创建用户
+     * 
      * @param metaObject 元对象
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        //为空则设置deleteFlag
-        Object deleteFlag = metaObject.getValue(EntityFieldName.DELETE_FLAG);
-        if (ObjectUtil.isNull(deleteFlag)) {
-            setFieldValByName(EntityFieldName.DELETE_FLAG, EntityFieldName.DELETE_FLAG_N, metaObject);
-        }
-
-        //为空则设置createTime
+        // 自动填充创建时间
         Object createTime = metaObject.getValue(EntityFieldName.CREATE_TIME);
         if (ObjectUtil.isNull(createTime)) {
             setFieldValByName(EntityFieldName.CREATE_TIME, LocalDateTime.now(), metaObject);
         }
 
+        // 自动填充创建用户
         try {
-            //为空则设置createUser
             Object createUser = metaObject.getValue(EntityFieldName.CREATE_USER);
             if (ObjectUtil.isNull(createUser)) {
-                setFieldValByName(EntityFieldName.CREATE_USER, StpUtil.getLoginId(), metaObject);
+                Long userId = StpUtil.getLoginIdAsLong();
+                setFieldValByName(EntityFieldName.CREATE_USER, userId, metaObject);
             }
         } catch (Exception e) {
-            //log.error("自动填充实体类createUser属性值失败: ", e);
+            log.warn("自动填充创建用户失败，可能用户未登录", e);
         }
-    }
-
-    @Override
-    public void updateFill(MetaObject metaObject) {
-        try {
-            setFieldValByName(EntityFieldName.UPDATE_USER, StpUtil.getLoginId(), metaObject);
-        } catch (Exception e) {
-            log.error("自动填充实体类updateUser属性值失败: ", e);
-        }
-        setFieldValByName(EntityFieldName.UPDATE_TIME, LocalDateTime.now(), metaObject);
     }
 
     /**
-     * Mybatis添加分页插件
+     * 更新时自动填充字段
+     * 1. 自动填充更新时间
+     * 2. 自动填充更新用户
+     * 
+     * @param metaObject 元对象
+     */
+    @Override
+    public void updateFill(MetaObject metaObject) {
+        // 自动填充更新时间
+        setFieldValByName(EntityFieldName.UPDATE_TIME, LocalDateTime.now(), metaObject);
+
+        // 自动填充更新用户
+        try {
+            Long userId = StpUtil.getLoginIdAsLong();
+            setFieldValByName(EntityFieldName.UPDATE_USER, userId, metaObject);
+        } catch (Exception e) {
+            log.warn("自动填充更新用户失败，可能用户未登录", e);
+        }
+    }
+
+    /**
+     * 配置Mybatis-Plus拦截器
+     * 1. 添加分页插件
+     * 
+     * @return MybatisPlusInterceptor 拦截器实例
      */
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 添加分页插件，指定数据库类型为MySQL
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
