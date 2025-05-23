@@ -5,10 +5,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HistoryView'
-}
+<script setup>
+// 这里可以添加历史记录相关逻辑
 </script>
 
 <style scoped>

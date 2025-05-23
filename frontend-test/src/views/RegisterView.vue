@@ -10,21 +10,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'RegisterView',
-  data() {
-    return {
-      username: '',
-      password: '',
-      confirmPassword: ''
-    }
-  },
-  methods: {
-    register() {
-      // 实现注册逻辑
-      this.$router.push('/login')
-    }
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const username = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const router = useRouter()
+
+const register = async () => {
+  try {
+    const response = await $axios.post('/api/user/register', {
+      username: username.value,
+      password: password.value,
+      confirmPassword: confirmPassword.value
+    })
+    router.push('/login')
+  } catch (error) {
+    alert('注册失败：' + error.response?.data?.message || error.message)
   }
 }
 </script>

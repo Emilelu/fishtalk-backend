@@ -15,9 +15,17 @@
     <div class="main-content">
       <!-- 侧边栏 -->
       <aside class="sidebar">
-        <router-link to="/user/dashboard" class="sidebar-item">仪表盘</router-link>
-        <router-link to="/user/analytics" class="sidebar-item">分析</router-link>
-        <router-link to="/user/history" class="sidebar-item">历史记录</router-link>
+        <template v-if="$route.path.startsWith('/user/profile')">
+          <router-link to="/user/profile/dashboard" class="sidebar-item">仪表盘</router-link>
+          <router-link to="/user/profile/analytics" class="sidebar-item">分析</router-link>
+        </template>
+        <template v-else-if="$route.path.startsWith('/user/settings')">
+          <router-link to="/user/settings" class="sidebar-item">设置</router-link>
+          <router-link to="/user/settings/analytics" class="sidebar-item">分析</router-link>
+        </template>
+        <template v-else-if="$route.path.startsWith('/user/messages')">
+          <router-link to="/user/messages/history" class="sidebar-item">历史记录</router-link>
+        </template>
       </aside>
 
       <!-- 主内容区 -->
@@ -33,28 +41,26 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'UserView',
-  data() {
-    return {
-      isAuthenticated: !!localStorage.getItem('token') // 根据 token 判断登录状态
-    }
-  },
-  created() {
-    // 监听全局登录状态变化
-    this.$root.$watch('isAuthenticated', (newVal) => {
-      this.isAuthenticated = newVal
-    })
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem('token')
-      this.isAuthenticated = false
-      this.$root.isAuthenticated = false
-      this.$router.push('/login')
-    }
-  }
+<script setup>
+import { ref, onMounted, getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
+
+const isAuthenticated = ref(!!localStorage.getItem('token'))
+const router = useRouter()
+const instance = getCurrentInstance() // 获取当前组件实例
+
+onMounted(() => {
+  // 通过 instance.proxy 访问 $root
+  instance.proxy.$root.$watch('isAuthenticated', (newVal) => {
+    isAuthenticated.value = newVal
+  })
+})
+
+const logout = () => {
+  localStorage.removeItem('token')
+  isAuthenticated.value = false
+  instance.proxy.$root.isAuthenticated = false // 通过 instance.proxy 访问 $root
+  router.push('/login')
 }
 </script>
 

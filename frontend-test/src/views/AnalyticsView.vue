@@ -5,10 +5,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AnalyticsView'
-}
+<script setup>
+// 这里可以添加分析相关逻辑
 </script>
 
 <style scoped>

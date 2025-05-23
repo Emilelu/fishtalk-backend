@@ -9,40 +9,36 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'LoginView',
-  data() {
-    return {
-      phone: '',
-      password: ''
-    }
-  },
-  methods: {
-    async login() {
-      try {
-        const response = await this.$axios.post('/api/user/login', {
-          phone: this.phone,
-          password: this.password
-        })
-        
-        // 保存 token 到 localStorage
-        localStorage.setItem('token', response.data.token)
-        
-        // 更新全局登录状态
-        this.$root.isAuthenticated = true
-        
-        // 跳转到用户页面
-        this.$router.push('/user')
-      } catch (error) {
-        // 改进错误处理逻辑
-        const errorMessage = error.response?.data?.message || 
-                           error.response?.data?.error || 
-                           error.message || 
-                           '登录失败，请稍后重试'
-        alert('登录失败：' + errorMessage)
-      }
-    }
+<script setup>
+import { ref, getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
+
+const phone = ref('')
+const password = ref('')
+const router = useRouter()
+const instance = getCurrentInstance() // 获取当前组件实例
+
+const login = async () => {
+  try {
+    const response = await instance.proxy.$axios.post('/api/user/login', {
+      phone: phone.value,
+      password: password.value
+    })
+    
+    // 保存 token 到 localStorage
+    localStorage.setItem('token', response.data.token)
+    
+    // 更新全局登录状态
+    instance.proxy.$root.isAuthenticated = true // 通过 instance.proxy 访问 $root
+    
+    // 跳转到用户页面
+    router.push('/user')
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || 
+                       error.response?.data?.error || 
+                       error.message || 
+                       '登录失败，请稍后重试'
+    alert('登录失败：' + errorMessage)
   }
 }
 </script>

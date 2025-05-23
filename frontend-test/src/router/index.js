@@ -10,7 +10,7 @@ import HistoryView from '@/views/HistoryView.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/user'
+    redirect: '/user/profile'
   },
   {
     path: '/login',
@@ -25,13 +25,31 @@ const routes = [
     component: UserView,
     meta: { requiresAuth: true },
     children: [
-      { path: 'profile', component: ProfileView },
-      { path: 'settings', component: SettingsView },
-      { path: 'messages', component: MessagesView },
-      { path: 'dashboard', component: DashboardView },
-      { path: 'analytics', component: AnalyticsView },
-      { path: 'history', component: HistoryView },
-      { path: '', redirect: '/user/dashboard' }
+      {
+        path: 'profile',
+        component: ProfileView,
+        children: [
+          { path: 'dashboard', component: DashboardView },
+          { path: 'analytics', component: AnalyticsView },
+          { path: '', redirect: '/user/profile/dashboard' }
+        ]
+      },
+      {
+        path: 'settings',
+        component: ProfileView,
+        children: [
+          { path: '', component: SettingsView },
+          { path: 'analytics', component: AnalyticsView },
+        ]
+      },
+      {
+        path: 'messages',
+        component: ProfileView,
+        children: [
+          { path: 'history', component: HistoryView },
+          { path: '', redirect: '/user/messages/history' }
+        ]
+      }
     ]
   }
 ]

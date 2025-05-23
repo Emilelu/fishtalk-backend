@@ -1,14 +1,11 @@
 <template>
   <div class="messages-view">
-    <h2>消息</h2>
-    <!-- 这里可以添加消息相关的内容 -->
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'MessagesView'
-}
+<script setup>
+// 这里可以添加消息相关逻辑
 </script>
 
 <style scoped>

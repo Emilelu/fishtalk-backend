@@ -12,9 +12,8 @@ app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
 
+// 初始化全局属性
 app.config.globalProperties.$axios = axios
-
-// 初始化全局登录状态
 app.config.globalProperties.isAuthenticated = !!localStorage.getItem('token')
 
 app.mount('#app') 

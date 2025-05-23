@@ -5,10 +5,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'DashboardView'
-}
+<script setup>
+// 这里可以添加仪表盘相关逻辑
 </script>
 
 <style scoped>
