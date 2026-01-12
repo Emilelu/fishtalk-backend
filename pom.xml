@@ -29,7 +29,7 @@
         <!--  依赖版本      -->
         <spring.boot.version>4.0.1</spring.boot.version>
         <knife4j.version>4.5.4</knife4j.version>
-        <mybatis-plus-spring-boot3-starter.version>3.5.15</mybatis-plus-spring-boot3-starter.version>
+        <mybatis-plus-spring-boot3-starter.version>3.5.16</mybatis-plus-spring-boot3-starter.version>
         <sa-token-spring-boot3-starter>1.39.0</sa-token-spring-boot3-starter>
         <cn.hutool.version>5.8.43</cn.hutool.version>
         <sa-token-spring-boot3-starter.version>1.44.0</sa-token-spring-boot3-starter.version>
